@@ -16,8 +16,8 @@ public class WeatherViewModel extends ViewModel {
     private List<WeatherBean> mWeatherList;
     private int index;
 
-    public WeatherViewModel(WeatherRepository weatherRepo) {
-        this.weatherRepo = weatherRepo;
+    public WeatherViewModel() {
+        this.weatherRepo = new WeatherRepository();
     }
 
     public LiveData<List<WeatherBean>> getWeatherBean() {

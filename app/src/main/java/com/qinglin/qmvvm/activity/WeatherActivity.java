@@ -73,7 +73,7 @@ public class WeatherActivity extends AppCompatActivity {
         mReload = findViewById(R.id.reload);
 
 //        mWeatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
-        mWeatherViewModel = new WeatherViewModel(new WeatherRepository());
+        mWeatherViewModel = new WeatherViewModel();
 
     }
 }
