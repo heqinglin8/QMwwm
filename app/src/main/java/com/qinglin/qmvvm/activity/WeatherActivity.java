@@ -17,6 +17,7 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 public class WeatherActivity extends AppCompatActivity {
 
@@ -72,8 +73,7 @@ public class WeatherActivity extends AppCompatActivity {
         mLoading = findViewById(R.id.loading);
         mReload = findViewById(R.id.reload);
 
-//        mWeatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
-        mWeatherViewModel = new WeatherViewModel();
+        mWeatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
 
     }
 }
