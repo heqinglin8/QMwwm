@@ -7,7 +7,7 @@ import java.util.List;
 
 import androidx.lifecycle.LiveData;
 
-public class WeatherViewModel extends BaseViewModel {
+public class WeatherViewModel extends BaseViewModel<WeatherModel> {
 
     private LiveData<List<WeatherBean>> weather;
 
@@ -16,11 +16,14 @@ public class WeatherViewModel extends BaseViewModel {
         return new WeatherModel();
     }
 
-   void init(){
+  public void init(){
         if(weather == null){
           return;
         }
-       weather = getModel()
+       weather = this.getModel().getWeather();
    }
 
+    public LiveData<List<WeatherBean>> getWeather() {
+        return weather;
+    }
 }
