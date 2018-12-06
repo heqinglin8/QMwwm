@@ -16,14 +16,22 @@ public class WeatherViewModel extends BaseViewModel<WeatherModel> {
         return new WeatherModel();
     }
 
-  public void init(){
-        if(weather == null){
-          return;
+    public void init() {
+        if (weather != null) {
+            return;
         }
-       weather = this.getModel().getWeather();
-   }
+        weather = this.getModel().getWeather();
+    }
 
     public LiveData<List<WeatherBean>> getWeather() {
         return weather;
+    }
+
+    public void loadData() {
+        this.getModel().loadData();
+    }
+
+    public void changeWeather() {
+        this.getModel().changeWeather();
     }
 }

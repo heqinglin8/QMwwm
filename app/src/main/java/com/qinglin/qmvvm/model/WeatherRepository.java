@@ -20,6 +20,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+/**
+ * 网络请求天气的类
+ */
 public class WeatherRepository {
     private final static String TAG = "WeatherRepository";
     private final static String location = "CN101010100";

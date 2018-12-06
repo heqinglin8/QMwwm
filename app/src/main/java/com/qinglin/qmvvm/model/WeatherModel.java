@@ -21,12 +21,12 @@ public class WeatherModel implements IModel {
     public LiveData<List<WeatherBean>> getWeather() {
         if (weatherData == null) {
             weatherData = new MutableLiveData<>();
-            loadingData();
+            loadData();
         }
         return weatherData;
     }
 
-    public void loadingData() {
+    public void loadData() {
         if (weatherRepo != null) {
             weatherRepo.loadWeather(new WeatherRepository.NetCallback() {
                 @Override

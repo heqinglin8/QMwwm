@@ -36,7 +36,7 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     private void initListener() {
-        mWeatherViewModel.getWeatherBean().observe(this, new Observer() {
+        mWeatherViewModel.getWeather().observe(this, new Observer() {
 
             @Override
             public void onChanged(Object o) {
@@ -62,7 +62,7 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mLoading.setVisibility(View.VISIBLE);
-                mWeatherViewModel.loadingData();
+                mWeatherViewModel.loadData();
             }
         });
     }
@@ -74,6 +74,6 @@ public class WeatherActivity extends AppCompatActivity {
         mReload = findViewById(R.id.reload);
 
         mWeatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
-
+        mWeatherViewModel.init();
     }
 }
