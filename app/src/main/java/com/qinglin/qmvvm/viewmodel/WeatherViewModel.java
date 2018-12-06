@@ -6,10 +6,11 @@ import com.qinglin.qmvvm.model.bean.WeatherBean;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 public class WeatherViewModel extends BaseViewModel<WeatherModel> {
 
-    private LiveData<List<WeatherBean>> weather;
+    private LiveData<List<WeatherBean>> weathers;
 
     @Override
     WeatherModel createModel() {
@@ -17,14 +18,18 @@ public class WeatherViewModel extends BaseViewModel<WeatherModel> {
     }
 
     public void init() {
-        if (weather != null) {
+        if (weathers != null) {
             return;
         }
-        weather = this.getModel().getWeather();
+        weathers = this.getModel().getWeathers();
     }
 
-    public LiveData<List<WeatherBean>> getWeather() {
-        return weather;
+    public LiveData<List<WeatherBean>> getWeathers() {
+        return weathers;
+    }
+
+    public LiveData<WeatherBean> getFirstWeather() {
+        return this.getModel().getFirstWeather();
     }
 
     public void loadData() {

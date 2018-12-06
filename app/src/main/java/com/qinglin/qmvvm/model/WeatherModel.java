@@ -9,7 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 
 public class WeatherModel implements IModel {
 
-    private MutableLiveData<List<WeatherBean>> weatherData;
+    private MutableLiveData<List<WeatherBean>> weathers;
+    MutableLiveData<WeatherBean> mFirstWeather = new MutableLiveData();
     private WeatherRepository weatherRepo;
     private List<WeatherBean> mWeatherList;
     private int index;
@@ -18,12 +19,16 @@ public class WeatherModel implements IModel {
         this.weatherRepo = new WeatherRepository();
     }
 
-    public LiveData<List<WeatherBean>> getWeather() {
-        if (weatherData == null) {
-            weatherData = new MutableLiveData<>();
+    public LiveData<List<WeatherBean>> getWeathers() {
+        if (weathers == null) {
+            weathers = new MutableLiveData<>();
             loadData();
         }
-        return weatherData;
+        return weathers;
+    }
+
+    public MutableLiveData<WeatherBean> getFirstWeather() {
+        return mFirstWeather;
     }
 
     public void loadData() {
@@ -32,15 +37,18 @@ public class WeatherModel implements IModel {
                 @Override
                 public void onSuccess(Object response) {
                     mWeatherList = (List<WeatherBean>) response;
-                    if (weatherData != null) {
-                        weatherData.setValue(mWeatherList);
+                    if (weathers != null) {
+                        weathers.setValue(mWeatherList);
+                    }
+                    if (mWeatherList != null && mWeatherList.size() > 0) {
+                        mFirstWeather.setValue(mWeatherList.get(0));
                     }
                 }
 
                 @Override
                 public void onFailure() {
-                    if (weatherData != null) {
-                        weatherData.setValue(null);
+                    if (weathers != null) {
+                        weathers.setValue(null);
                     }
                 }
             });
@@ -67,7 +75,7 @@ public class WeatherModel implements IModel {
         }
         if (mWeatherList != null && mWeatherList.size() > 0) {
             mWeatherList.get(0).now.cond_txt = text;
-            weatherData.setValue(mWeatherList);
+            mFirstWeather.setValue(mWeatherList.get(0));
         }
     }
 

@@ -36,14 +36,31 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     private void initListener() {
-        mWeatherViewModel.getWeather().observe(this, new Observer() {
+//        mWeatherViewModel.getWeathers().observe(this, new Observer() {
+//
+//            @Override
+//            public void onChanged(Object o) {
+//                if (o != null && o instanceof List) {
+//                    List<WeatherBean> weathers = (List<WeatherBean>) o;
+//                    if (!TextUtils.isEmpty(weathers.get(0).getNow().cond_txt)) {
+//                        mWeather.setText("今天天气" + weathers.get(0).getNow().cond_txt+" 刮"+weathers.get(0).getNow().wind_dir);
+//                    }
+//                    mLoading.setVisibility(View.GONE);
+//                }else {
+//                    mLoading.setVisibility(View.VISIBLE);
+//                    Toast.makeText(WeatherActivity.this,"网络错误",Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+
+        mWeatherViewModel.getFirstWeather().observe(this, new Observer() {
 
             @Override
             public void onChanged(Object o) {
-                if (o != null && o instanceof List) {
-                    List<WeatherBean> weathers = (List<WeatherBean>) o;
-                    if (!TextUtils.isEmpty(weathers.get(0).getNow().cond_txt)) {
-                        mWeather.setText("今天天气" + weathers.get(0).getNow().cond_txt+" 刮"+weathers.get(0).getNow().wind_dir);
+                if (o != null && o instanceof WeatherBean) {
+                    WeatherBean weather = (WeatherBean) o;
+                    if (!TextUtils.isEmpty(weather.getNow().cond_txt)) {
+                        mWeather.setText("今天天气" + weather.getNow().cond_txt+" 刮"+weather.getNow().wind_dir);
                     }
                     mLoading.setVisibility(View.GONE);
                 }else {
