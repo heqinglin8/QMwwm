@@ -75,7 +75,7 @@ public final class TaskExecuteScheduler {
     public final <REQUEST extends BaseTask.RequestValues, RESPONSE extends BaseTask.ResponseValue> void execute(final String presenterTag,
                                                                                                                 final BaseTask<REQUEST, RESPONSE> task,
                                                                                                                 final REQUEST values,
-                                                                                                                final Callback<RESPONSE> callback) {
+                                                                                                                final QResponseCallback<RESPONSE> callback) {
 
         execute(presenterTag, task, values, callback, Schedulers.io(), AndroidSchedulers.mainThread());
     }
@@ -91,7 +91,7 @@ public final class TaskExecuteScheduler {
     public final <REQUEST extends BaseTask.RequestValues, RESPONSE extends BaseTask.ResponseValue> void executeCPU(final String presenterTag,
                                                                                                                    final BaseTask<REQUEST, RESPONSE> task,
                                                                                                                    final REQUEST values,
-                                                                                                                   final Callback<RESPONSE> callback) {
+                                                                                                                   final QResponseCallback<RESPONSE> callback) {
 
         execute(presenterTag, task, values, callback, Schedulers.computation(), AndroidSchedulers.mainThread());
     }
@@ -109,7 +109,7 @@ public final class TaskExecuteScheduler {
     public final <REQUEST extends BaseTask.RequestValues, RESPONSE extends BaseTask.ResponseValue> void execute(final String presenterTag,
                                                                                                                 final BaseTask<REQUEST, RESPONSE> task,
                                                                                                                 final REQUEST values,
-                                                                                                                final Callback<RESPONSE> callback,
+                                                                                                                final QResponseCallback<RESPONSE> callback,
                                                                                                                 @TaskSchedulers int subscribeScheduler,
                                                                                                                 @TaskSchedulers int observerScheduler) {
         Scheduler subscribe = getTaskScheduler(subscribeScheduler);
@@ -122,7 +122,7 @@ public final class TaskExecuteScheduler {
     private <REQUEST extends BaseTask.RequestValues, RESPONSE extends BaseTask.ResponseValue> void execute(final String presenterTag,
                                                                                                            final BaseTask<REQUEST, RESPONSE> task,
                                                                                                            final REQUEST values,
-                                                                                                           final Callback<RESPONSE> callback,
+                                                                                                           final QResponseCallback<RESPONSE> callback,
                                                                                                            Scheduler subscribeScheduler,
                                                                                                            Scheduler observerScheduler) {
 
@@ -225,7 +225,7 @@ public final class TaskExecuteScheduler {
     /**
      * 任务执行结果反馈给Observer时的回调，并设置RESPONSE
      */
-    private static final class TaskCallBack<RESPONSE> implements Callback<RESPONSE> {
+    private static final class TaskCallBack<RESPONSE> implements QResponseCallback<RESPONSE> {
 
         private final ObservableEmitter<RESPONSE> mObservableEmitter;
         private final ObserverImpl<RESPONSE> mObserver;
@@ -284,10 +284,10 @@ public final class TaskExecuteScheduler {
 
         private BaseTask mTask;
         private String mTaskCancelTag;
-        private Callback<RESPONSE> mPresenterCallback;
+        private QResponseCallback<RESPONSE> mPresenterCallback;
 
 
-        public ObserverImpl(String tag, BaseTask task, Callback callback) {
+        public ObserverImpl(String tag, BaseTask task, QResponseCallback callback) {
             this.mTaskCancelTag = tag;
             this.mTask = task;
             this.mPresenterCallback = callback;

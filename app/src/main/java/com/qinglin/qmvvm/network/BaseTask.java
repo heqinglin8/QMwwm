@@ -5,7 +5,7 @@ public abstract class BaseTask<REQUEST extends BaseTask.RequestValues, RESPONSE 
     private boolean isCancelTask = false;
     private REQUEST mRequestValues;
 
-    private Callback<RESPONSE> mTaskCallback;
+    private QResponseCallback<RESPONSE> mTaskCallback;
 
     public void setRequestValues(REQUEST requestValues) {
         mRequestValues = requestValues;
@@ -15,7 +15,7 @@ public abstract class BaseTask<REQUEST extends BaseTask.RequestValues, RESPONSE 
         return mRequestValues;
     }
 
-    public void setTaskCallback(Callback<RESPONSE> callback) {
+    public void setTaskCallback(QResponseCallback<RESPONSE> callback) {
         mTaskCallback = callback;
     }
 

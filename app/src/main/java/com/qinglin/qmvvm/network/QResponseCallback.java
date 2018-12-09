@@ -6,7 +6,7 @@ package com.qinglin.qmvvm.network;
  * RESPONSE : 在这儿并不明确是什么对象，当具体使用时RESPONSE才是确定的。
  */
 
-public interface Callback<RESPONSE> {
+public interface QResponseCallback<RESPONSE> {
     /**
      * 任务执行成功时调用onSuccess(RESPONSE response),与onError(RESPONSE error, String errorMsg)方法互斥。
      * @param response

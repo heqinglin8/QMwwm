@@ -38,7 +38,7 @@ public class WeatherActivity extends AppCompatActivity {
             public void onChanged(Object o) {
                 if (o != null && o instanceof ActualWeather) {
                     ActualWeather weather = (ActualWeather) o;
-                    mWeather.setText("天气："+weather.getName());
+                    mWeather.setText("天气："+weather.getWeather().get(0).getMain());
                     mLoading.setVisibility(View.GONE);
                 }else {
                     mLoading.setVisibility(View.VISIBLE);

@@ -3,7 +3,7 @@ package com.qinglin.qmvvm.model;
 import android.util.Log;
 
 import com.qinglin.qmvvm.model.bean.ActualWeather;
-import com.qinglin.qmvvm.network.Callback;
+import com.qinglin.qmvvm.network.QResponseCallback;
 import com.qinglin.qmvvm.network.TaskExecuteScheduler;
 
 
@@ -21,7 +21,7 @@ public class WeatherModel implements IModel {
     }
 
     public LiveData<ActualWeather> getActualWeather() {
-        this.getWeatherFromNet(mPresenterTag,"707860",new Callback<ActualTask.ResponseValue>(){
+        this.getWeatherFromNet(mPresenterTag,"707860",new QResponseCallback<ActualTask.ResponseValue>(){
 
             @Override
             public void onSuccess(ActualTask.ResponseValue responseValue) {
@@ -44,7 +44,7 @@ public class WeatherModel implements IModel {
         return actualWeather;
     }
 
-    public void getWeatherFromNet(String tag, String cityId, Callback<ActualTask.ResponseValue> callback) {
+    public void getWeatherFromNet(String tag, String cityId, QResponseCallback<ActualTask.ResponseValue> callback) {
         final ActualTask.RequestValues requestValues = new ActualTask.RequestValues();
         requestValues.cityId = cityId;
         ActualTask task = new ActualTask();
