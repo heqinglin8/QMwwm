@@ -1,7 +1,6 @@
 package com.qinglin.qmvvm.activity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -9,11 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qinglin.qmvvm.R;
-import com.qinglin.qmvvm.model.bean.WeatherBean;
-import com.qinglin.qmvvm.model.WeatherRepository;
+import com.qinglin.qmvvm.model.bean.ActualWeather;
 import com.qinglin.qmvvm.viewmodel.WeatherViewModel;
-
-import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -36,32 +32,13 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     private void initListener() {
-//        mWeatherViewModel.getWeathers().observe(this, new Observer() {
-//
-//            @Override
-//            public void onChanged(Object o) {
-//                if (o != null && o instanceof List) {
-//                    List<WeatherBean> weathers = (List<WeatherBean>) o;
-//                    if (!TextUtils.isEmpty(weathers.get(0).getNow().cond_txt)) {
-//                        mWeather.setText("今天天气" + weathers.get(0).getNow().cond_txt+" 刮"+weathers.get(0).getNow().wind_dir);
-//                    }
-//                    mLoading.setVisibility(View.GONE);
-//                }else {
-//                    mLoading.setVisibility(View.VISIBLE);
-//                    Toast.makeText(WeatherActivity.this,"网络错误",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-
-        mWeatherViewModel.getFirstWeather().observe(this, new Observer() {
+        mWeatherViewModel.getActualWeather().observe(this, new Observer() {
 
             @Override
             public void onChanged(Object o) {
-                if (o != null && o instanceof WeatherBean) {
-                    WeatherBean weather = (WeatherBean) o;
-                    if (!TextUtils.isEmpty(weather.getNow().cond_txt)) {
-                        mWeather.setText("今天天气" + weather.getNow().cond_txt+" 刮"+weather.getNow().wind_dir);
-                    }
+                if (o != null && o instanceof ActualWeather) {
+                    ActualWeather weather = (ActualWeather) o;
+                    mWeather.setText("天气："+weather.getName());
                     mLoading.setVisibility(View.GONE);
                 }else {
                     mLoading.setVisibility(View.VISIBLE);
@@ -91,6 +68,5 @@ public class WeatherActivity extends AppCompatActivity {
         mReload = findViewById(R.id.reload);
 
         mWeatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
-        mWeatherViewModel.init();
     }
 }

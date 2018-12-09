@@ -1,58 +1,56 @@
 package com.qinglin.qmvvm.model;
 
-import com.qinglin.qmvvm.model.bean.WeatherBean;
+import android.util.Log;
 
-import java.util.List;
+import com.qinglin.qmvvm.model.bean.ActualWeather;
+import com.qinglin.qmvvm.network.Callback;
+import com.qinglin.qmvvm.network.TaskExecuteScheduler;
+
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 public class WeatherModel implements IModel {
 
-    private MutableLiveData<List<WeatherBean>> weathers;
-    MutableLiveData<WeatherBean> mFirstWeather = new MutableLiveData();
-    private WeatherRepository weatherRepo;
-    private List<WeatherBean> mWeatherList;
+    private MutableLiveData<ActualWeather> actualWeather = new MutableLiveData<>();
     private int index;
+    private String mPresenterTag;
 
-    public WeatherModel() {
-        this.weatherRepo = new WeatherRepository();
+    public WeatherModel(String presenterTag) {
+        this.mPresenterTag = presenterTag;
     }
 
-    public LiveData<List<WeatherBean>> getWeathers() {
-        if (weathers == null) {
-            weathers = new MutableLiveData<>();
-            loadData();
-        }
-        return weathers;
-    }
+    public LiveData<ActualWeather> getActualWeather() {
+        this.getWeatherFromNet(mPresenterTag,"707860",new Callback<ActualTask.ResponseValue>(){
 
-    public MutableLiveData<WeatherBean> getFirstWeather() {
-        return mFirstWeather;
-    }
+            @Override
+            public void onSuccess(ActualTask.ResponseValue responseValue) {
+                actualWeather.setValue(responseValue.mWeather);
+            }
 
-    public void loadData() {
-        if (weatherRepo != null) {
-            weatherRepo.loadWeather(new WeatherRepository.NetCallback() {
-                @Override
-                public void onSuccess(Object response) {
-                    mWeatherList = (List<WeatherBean>) response;
-                    if (weathers != null) {
-                        weathers.setValue(mWeatherList);
-                    }
-                    if (mWeatherList != null && mWeatherList.size() > 0) {
-                        mFirstWeather.setValue(mWeatherList.get(0));
-                    }
+            @Override
+            public void onError(ActualTask.ResponseValue error, String errorMsg) {
+                Log.e("hql",errorMsg);
+                if (actualWeather != null) {
+                    actualWeather.setValue(null);
                 }
+            }
 
-                @Override
-                public void onFailure() {
-                    if (weathers != null) {
-                        weathers.setValue(null);
-                    }
-                }
-            });
-        }
+            @Override
+            public void doWhat(ActualTask.ResponseValue doWhat) {
+
+            }
+        });
+        return actualWeather;
+    }
+
+    public void getWeatherFromNet(String tag, String cityId, Callback<ActualTask.ResponseValue> callback) {
+        final ActualTask.RequestValues requestValues = new ActualTask.RequestValues();
+        requestValues.cityId = cityId;
+        ActualTask task = new ActualTask();
+        task.setCancelTask(true);
+
+        TaskExecuteScheduler.getInstance().execute(tag, task, requestValues, callback);
     }
 
     public void changeWeather() {
@@ -72,10 +70,6 @@ public class WeatherModel implements IModel {
                 text = "晴朗";
                 index = 0;
                 break;
-        }
-        if (mWeatherList != null && mWeatherList.size() > 0) {
-            mWeatherList.get(0).now.cond_txt = text;
-            mFirstWeather.setValue(mWeatherList.get(0));
         }
     }
 
